@@ -6,12 +6,16 @@ import java.rmi.registry.LocateRegistry;
 
 import main.java.br.com.rmibank.corebanking.adapters.database.RmiBankSchema;
 import main.java.br.com.rmibank.corebanking.adapters.database.repository.impl.ClienteRepositoryLocalJavaClass;
+import main.java.br.com.rmibank.corebanking.adapters.database.repository.impl.TransacaoRepositoryLocalJavaClass;
 import main.java.br.com.rmibank.corebanking.domain.controller.IAgenciaController;
 import main.java.br.com.rmibank.corebanking.domain.controller.IAtmController;
 import main.java.br.com.rmibank.corebanking.domain.controller.impl.CoreBankingController;
 import main.java.br.com.rmibank.corebanking.domain.repository.IClienteRepository;
+import main.java.br.com.rmibank.corebanking.domain.repository.ITransacaoRepository;
 import main.java.br.com.rmibank.corebanking.domain.service.IClienteService;
+import main.java.br.com.rmibank.corebanking.domain.service.ITransacaoService;
 import main.java.br.com.rmibank.corebanking.domain.service.impl.ClienteService;
+import main.java.br.com.rmibank.corebanking.domain.service.impl.TransacaoService;
 
 public class CoreBanking {
     public static void main(String[] args) throws Exception {
@@ -19,8 +23,10 @@ public class CoreBanking {
         RmiBankSchema dataBase = new RmiBankSchema();
 
         IClienteRepository clienteRepository = new ClienteRepositoryLocalJavaClass(dataBase);
+        ITransacaoRepository transacaoRepository = new TransacaoRepositoryLocalJavaClass(dataBase);
 
         IClienteService contaCorrenteService = new ClienteService(clienteRepository);
+        ITransacaoService transacaoService = new TransacaoService(transacaoRepository);
 
         try {
 
@@ -34,12 +40,12 @@ public class CoreBanking {
             LocateRegistry.createRegistry(Integer.parseInt(serverPort));
 
             // Cria o objeto que implementa os metodos que serao servidos
-            IAgenciaController agenciaController = new CoreBankingController(contaCorrenteService);
+            IAgenciaController agenciaController = new CoreBankingController(contaCorrenteService, transacaoService);
             // Coloca na porta registrada o servico da AgenciaController
             Naming.bind("AgenciaController", (Remote) agenciaController);
 
             // Cria o objeto que implementa os metodos que serao servidos
-            IAtmController atmController = new CoreBankingController(contaCorrenteService);
+            IAtmController atmController = new CoreBankingController(contaCorrenteService, transacaoService);
             // Coloca na porta registrada o servico da AtmController
             Naming.bind("AtmController", (Remote) atmController);
 
