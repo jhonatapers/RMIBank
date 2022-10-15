@@ -102,6 +102,32 @@ public class ClienteRepositoryLocalJavaClass implements IClienteRepository {
     }
 
     @Override
+    public ContaCorrente getContaCorrente(int agencia, long codigoContaCorrente) {
+
+        return dataBase.clientes
+                .stream()
+                .filter(c -> c.getContasCorrentes()
+                        .stream()
+                        .filter(cc -> cc.getAgencia() == agencia
+                                && cc.getCodigoContaCorrente() == codigoContaCorrente)
+                        .findFirst()
+                        .isPresent())
+                .findFirst()
+                .orElseThrow(() -> {
+                    throw new RuntimeException("Conta não cadastrada!");
+                })
+                .getContasCorrentes()
+                .stream()
+                .filter(cc -> cc.getAgencia() == agencia
+                        && cc.getCodigoContaCorrente() == codigoContaCorrente)
+                .findFirst()
+                .orElseThrow(() -> {
+                    throw new RuntimeException("Conta não cadastrada!");
+                });
+
+    }
+
+    @Override
     public List<ContaCorrente> getAllContarCorrentes(long cpfCliente) {
 
         return dataBase.clientes

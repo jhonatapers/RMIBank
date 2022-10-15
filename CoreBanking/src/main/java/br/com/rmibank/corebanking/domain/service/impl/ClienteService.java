@@ -39,6 +39,15 @@ public class ClienteService implements IClienteService {
 
     @Override
     public Comprovante saque(int agencia, long codigoContaCorrente, BigDecimal valor) {
+
+        ContaCorrente contaCorrente = clienteRepository.getContaCorrente(agencia, codigoContaCorrente);
+        if (contaCorrente.getSaldo().compareTo(valor) == -1)
+            throw new RuntimeException("Saldo insuficiente");
+
+        contaCorrente.getSaldo().subtract(valor);
+        
+        
+
         return new Comprovante(OperacaoEnum.SAQUE, new BigDecimal(0.1));
     }
 
