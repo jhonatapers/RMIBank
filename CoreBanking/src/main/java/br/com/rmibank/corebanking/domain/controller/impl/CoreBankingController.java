@@ -8,17 +8,24 @@ import java.util.List;
 import main.java.br.com.rmibank.corebanking.domain.controller.IAgenciaController;
 import main.java.br.com.rmibank.corebanking.domain.controller.IAtmController;
 import main.java.br.com.rmibank.corebanking.domain.dto.Comprovante;
+import main.java.br.com.rmibank.corebanking.domain.dto.OperacaoEnum;
 import main.java.br.com.rmibank.corebanking.domain.entity.Cliente;
+import main.java.br.com.rmibank.corebanking.domain.entity.Transacao;
 import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrente;
 import main.java.br.com.rmibank.corebanking.domain.service.IClienteService;
+import main.java.br.com.rmibank.corebanking.domain.service.ITransacaoService;
 
 public class CoreBankingController extends UnicastRemoteObject implements IAgenciaController, IAtmController {
 
     private IClienteService clienteService;
 
-    public CoreBankingController(IClienteService contaCorrenteService) throws RemoteException {
+    private ITransacaoService transacaoService;
+
+    public CoreBankingController(IClienteService contaCorrenteService, ITransacaoService transacaoService)
+            throws RemoteException {
         super();
         this.clienteService = contaCorrenteService;
+        this.transacaoService = transacaoService;
     }
 
     @Override
@@ -47,12 +54,32 @@ public class CoreBankingController extends UnicastRemoteObject implements IAgenc
 
     @Override
     public Comprovante saque(int agencia, long codigoContaCorrente, BigDecimal valor) throws RemoteException {
-        return clienteService.saque(agencia, codigoContaCorrente, valor);
+
+        try {
+
+            Comprovante comprovante = clienteService.saque(agencia, codigoContaCorrente, valor);
+            transacaoService.efetuaTransacao(new Transacao(agencia, codigoContaCorrente, valor, OperacaoEnum.SAQUE));
+
+            return comprovante;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     @Override
     public Comprovante deposito(int agencia, long codigoContaCorrente, BigDecimal valor) throws RemoteException {
-        return clienteService.deposito(agencia, codigoContaCorrente, valor);
+        try {
+
+            Comprovante comprovante = clienteService.deposito(agencia, codigoContaCorrente, valor);
+            transacaoService.efetuaTransacao(new Transacao(agencia, codigoContaCorrente, valor, OperacaoEnum.DEPOSITO));
+
+            return comprovante;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+
     }
 
     @Override

@@ -1,6 +1,5 @@
 package main.java.br.com.rmibank.corebanking;
 
-import java.math.BigDecimal;
 import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
