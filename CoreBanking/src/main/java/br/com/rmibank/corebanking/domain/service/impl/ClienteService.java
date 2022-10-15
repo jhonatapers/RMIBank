@@ -3,9 +3,9 @@ package main.java.br.com.rmibank.corebanking.domain.service.impl;
 import java.math.BigDecimal;
 import java.util.List;
 
-import main.java.br.com.rmibank.corebanking.domain.dto.Comprovante;
 import main.java.br.com.rmibank.corebanking.domain.dto.OperacaoEnum;
 import main.java.br.com.rmibank.corebanking.domain.entity.Cliente;
+import main.java.br.com.rmibank.corebanking.domain.entity.Transacao;
 import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrente;
 import main.java.br.com.rmibank.corebanking.domain.repository.IClienteRepository;
 import main.java.br.com.rmibank.corebanking.domain.service.IClienteService;
@@ -24,7 +24,7 @@ public class ClienteService implements IClienteService {
         if (ValidaCpf.isCPF(cliente.getCpf()))
             clienteRepository.save(cliente);
         else
-            throw new RuntimeException("CPF Informado invalido!");
+            throw new RuntimeException("CPF Informado inválido!");
     }
 
     @Override
@@ -38,27 +38,34 @@ public class ClienteService implements IClienteService {
     }
 
     @Override
-    public Comprovante saque(int agencia, long codigoContaCorrente, BigDecimal valor) {
+    public Transacao saque(int agencia, long codigoContaCorrente, BigDecimal valor) {
 
         ContaCorrente contaCorrente = clienteRepository.getContaCorrente(agencia, codigoContaCorrente);
         if (contaCorrente.getSaldo().compareTo(valor) == -1)
             throw new RuntimeException("Saldo insuficiente");
 
         contaCorrente.getSaldo().subtract(valor);
-        
-        
 
-        return new Comprovante(OperacaoEnum.SAQUE, new BigDecimal(0.1));
+        return new Transacao(agencia, codigoContaCorrente, valor, OperacaoEnum.SAQUE);
+
     }
 
     @Override
-    public Comprovante deposito(int agencia, long codigoContaCorrente, BigDecimal valor) {
-        return new Comprovante(OperacaoEnum.DEPOSITO, new BigDecimal(0.1));
+    public Transacao deposito(int agencia, long codigoContaCorrente, BigDecimal valor) {
+
+        ContaCorrente contaCorrente = clienteRepository.getContaCorrente(agencia, codigoContaCorrente);
+        if (contaCorrente.getSaldo().compareTo(valor) == 1)
+            throw new RuntimeException("Valor inválido");
+
+        contaCorrente.getSaldo().add(valor);
+
+        return new Transacao(agencia, codigoContaCorrente, valor, OperacaoEnum.DEPOSITO);
+
     }
 
     @Override
-    public Comprovante saldo(int agencia, long codigoContaCorrente) {
-        return new Comprovante(OperacaoEnum.SALDO, new BigDecimal(0.1));
+    public ContaCorrente saldo(int agencia, long codigoContaCorrente) {
+        return clienteRepository.getContaCorrente(agencia, codigoContaCorrente);
     }
 
     @Override
