@@ -2,6 +2,8 @@ package main.java.br.com.rmibank.corebanking.application.view;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import main.java.br.com.rmibank.corebanking.domain.entity.Transacao;
@@ -22,7 +24,7 @@ public class TransacaoView {
         System.out.println(" ------------------ ");
         System.out.println(" OPERACAO : " + transacao.getOperacao().toString());
         System.out.println(" VALOR    : " + format.format(transacao.getValor()));
-        System.out.println(" DATA     : " + format.format(transacao.getData()));
+        System.out.println(" DATA     : " + transacao.getData());
         System.out.println(" ------------------ ");
 
     }
