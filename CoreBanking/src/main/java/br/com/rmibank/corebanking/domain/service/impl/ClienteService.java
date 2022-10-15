@@ -9,6 +9,7 @@ import main.java.br.com.rmibank.corebanking.domain.entity.Cliente;
 import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrente;
 import main.java.br.com.rmibank.corebanking.domain.repository.IClienteRepository;
 import main.java.br.com.rmibank.corebanking.domain.service.IClienteService;
+import main.java.br.com.rmibank.corebanking.util.ValidaCpf;
 
 public class ClienteService implements IClienteService {
 
@@ -20,7 +21,10 @@ public class ClienteService implements IClienteService {
 
     @Override
     public void cadastro(Cliente cliente) {
-        clienteRepository.save(cliente);
+        if (ValidaCpf.isCPF(cliente.getCpf()))
+            clienteRepository.save(cliente);
+        else
+            throw new RuntimeException("CPF Informado invalido!");
     }
 
     @Override
