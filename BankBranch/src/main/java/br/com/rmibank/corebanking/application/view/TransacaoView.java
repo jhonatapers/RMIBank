@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
-import main.java.br.com.rmibank.corebanking.domain.dto.Comprovante;
+import main.java.br.com.rmibank.corebanking.domain.entity.Transacao;
 
 public class TransacaoView {
 
@@ -17,11 +17,12 @@ public class TransacaoView {
 
     }
 
-    public static void viewComprovante(Comprovante comprovante) {
+    public static void viewComprovante(Transacao transacao) {
 
         System.out.println(" ------------------ ");
-        System.out.println(" OPERACAO : " + comprovante.getOperacao().toString());
-        System.out.println(" VALOR    : " + format.format(comprovante.getValor()));
+        System.out.println(" OPERACAO : " + transacao.getOperacao().toString());
+        System.out.println(" VALOR    : " + format.format(transacao.getValor()));
+        System.out.println(" DATA     : " + format.format(transacao.getData()));
         System.out.println(" ------------------ ");
 
     }
