@@ -90,6 +90,17 @@ public class MenuView extends Thread {
                         System.out.println(e.getMessage());
                     }
                     break;
+                case "6":
+                    try {
+                        ContaCorrente cc = ContaCorrenteView.monta(sc);
+                        TransacaoView
+                                .viewComprovante(
+                                        agenciaController.deposito(cc.getAgencia(), cc.getCodigoContaCorrente(),
+                                                TransacaoView.montaValor(sc)));
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
                 default:
                     System.out.println("Comando nao reconhecido");
                     break;
