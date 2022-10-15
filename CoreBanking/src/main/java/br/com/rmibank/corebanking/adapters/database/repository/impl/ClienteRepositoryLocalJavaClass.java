@@ -18,23 +18,29 @@ public class ClienteRepositoryLocalJavaClass implements IClienteRepository {
 
     @Override
     public Optional<Cliente> findByCpf(long cpf) {
+
         return dataBase.clientes
                 .stream()
                 .filter(cliente -> cliente.getCpf() == cpf)
                 .findFirst();
+
     }
 
     @Override
     public void save(Cliente cliente) {
+
         if (dataBase.clientes.stream().filter(c -> c.getCpf() == cliente.getCpf()).findFirst().isPresent())
             throw new RuntimeException("Cliente já cadastrado");
 
         dataBase.clientes.add(cliente);
+
     }
 
     public void update(Cliente cliente) {
+
         dataBase.clientes.removeIf(c -> c.getCpf() == cliente.getCpf());
         dataBase.clientes.add(cliente);
+
     }
 
     @Override
@@ -74,10 +80,16 @@ public class ClienteRepositoryLocalJavaClass implements IClienteRepository {
     }
 
     @Override
-    public void encerraContaCorrente(long cpfCliente, int agencia, long codigoContaCorrente) {
+    public void encerraContaCorrente(int agencia, long codigoContaCorrente) {
+
         dataBase.clientes
                 .stream()
-                .filter(c -> c.getCpf() == cpfCliente)
+                .filter(c -> c.getContasCorrentes()
+                        .stream()
+                        .filter(cc -> cc.getAgencia() == agencia
+                                && cc.getCodigoContaCorrente() == codigoContaCorrente)
+                        .findFirst()
+                        .isPresent())
                 .findFirst()
                 .ifPresentOrElse((cliente) -> {
                     cliente.getContasCorrentes()

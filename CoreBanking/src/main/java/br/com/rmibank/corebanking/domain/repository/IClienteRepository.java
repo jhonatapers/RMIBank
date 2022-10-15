@@ -14,7 +14,7 @@ public interface IClienteRepository {
 
     public void newContaCorrente(long cpfCliente, ContaCorrente contaCorrente);
 
-    public void encerraContaCorrente(long cpfCliente, int agencia, long codigoContaCorrente);
+    public void encerraContaCorrente(int agencia, long codigoContaCorrente);
 
     public List<ContaCorrente> getAllContarCorrentes(long cpf);
 

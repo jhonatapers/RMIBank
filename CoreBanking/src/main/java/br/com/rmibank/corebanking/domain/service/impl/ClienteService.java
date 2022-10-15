@@ -34,7 +34,7 @@ public class ClienteService implements IClienteService {
 
     @Override
     public void enccerraContaCorrente(int agencia, long codigoContaCorrente) {
-        clienteRepository.encerraContaCorrente(codigoContaCorrente, agencia, codigoContaCorrente);
+        clienteRepository.encerraContaCorrente(agencia, codigoContaCorrente);
     }
 
     @Override
