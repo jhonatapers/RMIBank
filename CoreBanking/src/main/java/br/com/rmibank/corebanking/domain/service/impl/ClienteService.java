@@ -44,7 +44,7 @@ public class ClienteService implements IClienteService {
         if (contaCorrente.getSaldo().compareTo(valor) == -1)
             throw new RuntimeException("Saldo insuficiente");
 
-        contaCorrente.getSaldo().subtract(valor);
+        contaCorrente.setSaldo(contaCorrente.getSaldo().subtract(valor));
 
         return new Transacao(agencia, codigoContaCorrente, valor, OperacaoEnum.SAQUE);
 
@@ -57,7 +57,7 @@ public class ClienteService implements IClienteService {
         if (contaCorrente.getSaldo().compareTo(valor) == 1)
             throw new RuntimeException("Valor inválido");
 
-        contaCorrente.getSaldo().add(valor);
+        contaCorrente.setSaldo(contaCorrente.getSaldo().add(valor));
 
         return new Transacao(agencia, codigoContaCorrente, valor, OperacaoEnum.DEPOSITO);
 
