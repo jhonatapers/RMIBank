@@ -1,0 +1,20 @@
+package main.java.br.com.rmibank.corebanking.adapters.database;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import main.java.br.com.rmibank.corebanking.domain.entity.Cliente;
+import main.java.br.com.rmibank.corebanking.domain.entity.Transacao;
+
+public class RmiBankSchema {
+
+    public List<Cliente> clientes;
+
+    public List<Transacao> transacoes;
+
+    public RmiBankSchema() {
+        this.clientes = new ArrayList<Cliente>();
+        this.transacoes = new ArrayList<Transacao>();
+    }
+
+}
