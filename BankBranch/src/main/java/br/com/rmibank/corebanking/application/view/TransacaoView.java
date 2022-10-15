@@ -2,8 +2,6 @@ package main.java.br.com.rmibank.corebanking.application.view;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import main.java.br.com.rmibank.corebanking.domain.entity.Transacao;
