@@ -6,10 +6,14 @@ import main.java.br.com.rmibank.corebanking.domain.entity.Cliente;
 
 public class ClienteView {
 
+    public static long cpf(Scanner sc) {
+        System.out.println("\r\nInforme o CPF:\r\n");
+        return Long.parseLong(sc.nextLine());
+    }
+
     public static Cliente monta(Scanner sc) {
 
-        System.out.println("\r\nInforme CPF:");
-        long cpf = Long.parseLong(sc.nextLine());
+        long cpf = cpf(sc);
 
         System.out.println("\r\nInforme NOME:");
         String nome = sc.nextLine();

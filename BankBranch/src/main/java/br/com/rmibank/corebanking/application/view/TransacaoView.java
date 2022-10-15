@@ -17,7 +17,7 @@ public class TransacaoView {
 
     }
 
-    public static void viewComprovante(Transacao transacao) {
+    public static void view(Transacao transacao) {
 
         System.out.println(" ------------------ ");
         System.out.println(" OPERACAO : " + transacao.getOperacao().toString());

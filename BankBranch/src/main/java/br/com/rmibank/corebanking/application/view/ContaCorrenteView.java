@@ -7,11 +7,6 @@ import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrent
 
 public class ContaCorrenteView {
 
-    public static long consulta(Scanner sc) {
-        System.out.println("\r\nInforme o CPF:\r\n");
-        return Long.parseLong(sc.nextLine());
-    }
-
     public static void view(ContaCorrente contaCorrente) {
         System.out.println(" ------------------ ");
         System.out.println(" AGENCIA: " + contaCorrente.getAgencia());
