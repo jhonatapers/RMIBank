@@ -1,10 +1,11 @@
 package main.java.br.com.rmibank.corebanking.domain.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import main.java.br.com.rmibank.corebanking.domain.dto.OperacaoEnum;
 
-public class Transacao {
+public class Transacao implements Serializable {
 
     private long codigoContaCorrente;
 

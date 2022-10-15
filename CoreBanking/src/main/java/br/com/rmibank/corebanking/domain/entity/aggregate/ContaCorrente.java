@@ -1,8 +1,9 @@
 package main.java.br.com.rmibank.corebanking.domain.entity.aggregate;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class ContaCorrente {
+public class ContaCorrente implements Serializable {
     
     private long codigoContaCorrente;
 

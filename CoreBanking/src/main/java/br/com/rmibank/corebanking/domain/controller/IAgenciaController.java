@@ -1,6 +1,7 @@
 package main.java.br.com.rmibank.corebanking.domain.controller;
 
 import java.math.BigDecimal;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import main.java.br.com.rmibank.corebanking.domain.dto.Comprovante;
 import main.java.br.com.rmibank.corebanking.domain.entity.Cliente;
 import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrente;
 
-public interface IAgenciaController {
+public interface IAgenciaController extends Remote{
 
     public void cadastroCliente(Cliente cliente) throws RemoteException;
 

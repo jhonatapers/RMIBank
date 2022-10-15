@@ -34,7 +34,7 @@ public class CoreBankingController extends UnicastRemoteObject implements IAgenc
     @Override
     public void aberturaContaCorrente(long cpfCliente, ContaCorrente contaCorrente) throws RemoteException {
         try {
-            clienteService.abertura(cpfCliente, contaCorrente);
+            clienteService.aberturaContaCorrente(cpfCliente, contaCorrente);
         } catch (Exception e) {
             throw new RemoteException(e.getMessage(), e);
         }

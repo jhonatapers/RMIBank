@@ -11,7 +11,7 @@ public interface IClienteService {
 
     public void cadastro(Cliente cliente);
 
-    public void abertura(long cpfCliente, ContaCorrente contaCorrente);
+    public void aberturaContaCorrente(long cpfCliente, ContaCorrente contaCorrente);
 
     public void enccerraContaCorrente(int agencia, long codigoContaCorrente);
 

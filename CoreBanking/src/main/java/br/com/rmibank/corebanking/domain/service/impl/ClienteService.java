@@ -24,7 +24,7 @@ public class ClienteService implements IClienteService {
     }
 
     @Override
-    public void abertura(long cpfCliente, ContaCorrente contaCorrente) {
+    public void aberturaContaCorrente(long cpfCliente, ContaCorrente contaCorrente) {
         clienteRepository.newContaCorrente(cpfCliente, contaCorrente);
     }
 
@@ -35,17 +35,17 @@ public class ClienteService implements IClienteService {
 
     @Override
     public Comprovante saque(int agencia, long codigoContaCorrente, BigDecimal valor) {
-        return new Comprovante(123, OperacaoEnum.SAQUE, new BigDecimal(0.1));
+        return new Comprovante(OperacaoEnum.SAQUE, new BigDecimal(0.1));
     }
 
     @Override
     public Comprovante deposito(int agencia, long codigoContaCorrente, BigDecimal valor) {
-        return new Comprovante(123, OperacaoEnum.DEPOSITO, new BigDecimal(0.1));
+        return new Comprovante(OperacaoEnum.DEPOSITO, new BigDecimal(0.1));
     }
 
     @Override
     public Comprovante saldo(int agencia, long codigoContaCorrente) {
-        return new Comprovante(123, OperacaoEnum.SALDO, new BigDecimal(0.1));
+        return new Comprovante(OperacaoEnum.SALDO, new BigDecimal(0.1));
     }
 
     @Override

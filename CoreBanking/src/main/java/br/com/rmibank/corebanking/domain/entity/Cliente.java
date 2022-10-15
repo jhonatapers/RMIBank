@@ -1,20 +1,23 @@
 package main.java.br.com.rmibank.corebanking.domain.entity;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrente;
 
-public class Cliente {
+public class Cliente implements Serializable {
 
     private long cpf;
 
     private String nome;
 
-    List<ContaCorrente> contasCorrentes;
+    private List<ContaCorrente> contasCorrentes;
 
     public Cliente(long cpf, String nome) {
         this.cpf = cpf;
         this.nome = nome;
+        this.contasCorrentes = new ArrayList<ContaCorrente>();
     }
 
     public long getCpf() {
