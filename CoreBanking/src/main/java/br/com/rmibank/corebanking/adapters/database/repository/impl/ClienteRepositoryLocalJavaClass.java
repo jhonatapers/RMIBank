@@ -27,7 +27,7 @@ public class ClienteRepositoryLocalJavaClass implements IClienteRepository {
     @Override
     public void save(Cliente cliente) {
         if (dataBase.clientes.stream().filter(c -> c.getCpf() == cliente.getCpf()).findFirst().isPresent())
-            throw new RuntimeException("DUP_VAL_ON_INDEX");
+            throw new RuntimeException("Cliente já cadastrado");
 
         dataBase.clientes.add(cliente);
     }
