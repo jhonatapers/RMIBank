@@ -31,10 +31,9 @@ public class CoreBanking {
         try {
 
             String serverAdress = "10.40.48.10";// "192.168.0.12";//args[0];
-            int serverPortAtm = Integer.parseInt("1099");// args[1];
-            int serverPortBankBranch = Integer.parseInt("1098");// args[1];
+            int serverPort = Integer.parseInt("1099");// args[1];
 
-            Server server = new Server(serverAdress, serverPortBankBranch, agenciaController, atmController)
+            Server server = new Server(serverAdress, serverPort, agenciaController, atmController)
 
         } catch (Exception e) {
             e.printStackTrace();
