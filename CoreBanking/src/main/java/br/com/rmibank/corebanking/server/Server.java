@@ -4,21 +4,24 @@ import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
 
-public abstract class Server extends Thread {
+import main.java.br.com.rmibank.corebanking.domain.controller.IAgenciaController;
+import main.java.br.com.rmibank.corebanking.domain.controller.IAtmController;
+
+public class Server extends Thread {
 
     private String address;
 
     private int port;
 
-    private String bindName;
+    private IAgenciaController agenciaController;
 
-    private Object remoteObjectInterface;
+    private IAtmController atmController;
 
-    public Server(String address, int port, String bindName, Object remoteObjectInterface) {
+    public Server(String address, int port, IAgenciaController agenciaController, IAtmController atmController) {
         this.address = address;
         this.port = port;
-        this.bindName = bindName;
-        this.remoteObjectInterface = remoteObjectInterface;
+        this.agenciaController = agenciaController;
+        this.atmController = atmController;
     }
 
     @Override
@@ -34,7 +37,11 @@ public abstract class Server extends Thread {
 
             // Cria o objeto que implementa os metodos que serao servidos
             // Coloca na porta registrada o servico da AgenciaController
-            Naming.bind(bindName, (Remote) remoteObjectInterface);
+            Naming.bind("AgenciaController", (Remote) agenciaController);
+
+            // Cria o objeto que implementa os metodos que serao servidos
+            // Coloca na porta registrada o servico da AgenciaController
+            Naming.bind("AtmController", (Remote) atmController);
 
             System.out.println("Conexao estabelecida.");
 
