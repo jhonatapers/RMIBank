@@ -5,13 +5,13 @@ import java.util.Scanner;
 import main.java.br.com.rmibank.corebanking.domain.controller.IAgenciaController;
 import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrente;
 
-public class MenuView extends Thread {
+public class MenuViewAgencia extends Thread {
 
     private Scanner sc = new Scanner(System.in);
 
     private IAgenciaController agenciaController;
 
-    public MenuView(IAgenciaController agenciaController) {
+    public MenuViewAgencia(IAgenciaController agenciaController) {
         this.agenciaController = agenciaController;
     }
 

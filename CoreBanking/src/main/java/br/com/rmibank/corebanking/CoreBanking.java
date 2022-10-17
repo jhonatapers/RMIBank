@@ -30,7 +30,7 @@ public class CoreBanking {
 
         try {
 
-            String serverAdress = "10.40.48.10";// "192.168.0.12";//args[0];
+            String serverAdress = "localhost";// "192.168.0.12";//args[0];
             int serverPort = Integer.parseInt("1099");// args[1];
 
             Server server = new Server(serverAdress, serverPort, agenciaController, atmController);
