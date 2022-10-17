@@ -5,13 +5,13 @@ import java.util.Scanner;
 import main.java.br.com.rmibank.corebanking.domain.controller.IAtmController;
 import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrente;
 
-public class MenuView extends Thread {
+public class MenuViewAtm extends Thread {
 
     private Scanner sc = new Scanner(System.in);
 
     private IAtmController atmController;
 
-    public MenuView(IAtmController atmController) {
+    public MenuViewAtm(IAtmController atmController) {
         this.atmController = atmController;
     }
 
@@ -27,7 +27,7 @@ public class MenuView extends Thread {
             switch (in) {
                 case "--help":
                     System.out.println(" ------------------------------------------ ");
-                    System.out.println(" ---------------ACOES AGENCIA-------------- ");
+                    System.out.println(" ---------------  ACOES ATM  -------------- ");
                     System.out.println(" ------------------------------------------ ");
                     System.out.println("| 1 - saque                                 |");
                     System.out.println("| 2 - deposito                              |");

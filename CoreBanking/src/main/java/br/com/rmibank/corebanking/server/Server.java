@@ -31,6 +31,7 @@ public class Server extends Thread {
 
             // Definicao do ip onde o servico ira funcionar
             System.setProperty("java.rmi.server.hostname", address);
+            System.setProperty("java.rmi.server.useCodebaseOnly", "false");
 
             // Registro do servico em uma porta
             LocateRegistry.createRegistry(port);
