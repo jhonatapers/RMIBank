@@ -12,8 +12,7 @@ import main.java.br.com.rmibank.corebanking.domain.service.IClienteService;
 import main.java.br.com.rmibank.corebanking.domain.service.ITransacaoService;
 import main.java.br.com.rmibank.corebanking.domain.service.impl.ClienteService;
 import main.java.br.com.rmibank.corebanking.domain.service.impl.TransacaoService;
-import main.java.br.com.rmibank.corebanking.server.impl.AtmServer;
-import main.java.br.com.rmibank.corebanking.server.impl.BankBranchServer;
+import main.java.br.com.rmibank.corebanking.server.Server;
 
 public class CoreBanking {
     public static void main(String[] args) throws Exception {
@@ -31,18 +30,11 @@ public class CoreBanking {
 
         try {
 
-            String serverAdress = "localhost";// "192.168.0.12";//args[0];
+            String serverAdress = "10.40.48.10";// "192.168.0.12";//args[0];
             int serverPortAtm = Integer.parseInt("1099");// args[1];
             int serverPortBankBranch = Integer.parseInt("1098");// args[1];
 
-            AtmServer atmServer = new AtmServer(serverAdress, serverPortAtm, atmController);
-            atmServer.run();
-
-            BankBranchServer bankBranchServer = new BankBranchServer(serverAdress, serverPortBankBranch,
-                    agenciaController);
-            bankBranchServer.run();
-
-            System.out.println("Conexao estabelecida.");
+            Server server = new Server(serverAdress, serverPortBankBranch, agenciaController, atmController)
 
         } catch (Exception e) {
             e.printStackTrace();
