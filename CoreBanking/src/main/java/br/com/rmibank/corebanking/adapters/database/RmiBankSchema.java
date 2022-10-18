@@ -12,9 +12,12 @@ public class RmiBankSchema {
 
     public List<Transacao> transacoes;
 
+    public List<Integer> transactions;
+
     public RmiBankSchema() {
         this.clientes = new ArrayList<Cliente>();
         this.transacoes = new ArrayList<Transacao>();
+        this.transactions = new ArrayList<Integer>();
     }
 
 }
