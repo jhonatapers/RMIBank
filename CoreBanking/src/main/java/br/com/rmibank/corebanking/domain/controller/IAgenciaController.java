@@ -11,20 +11,20 @@ import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrent
 
 public interface IAgenciaController extends Remote {
 
-    public void cadastroCliente(Cliente cliente) throws RemoteException;
+    public void cadastroCliente(int idempotecy, Cliente cliente) throws RemoteException;
 
-    public List<ContaCorrente> consultaContasCorrentes(long cpfCliente) throws RemoteException;
+    public List<ContaCorrente> consultaContasCorrentes(int idempotecy, long cpfCliente) throws RemoteException;
 
-    public void aberturaContaCorrente(long cpfCliente, ContaCorrente contaCorrente) throws RemoteException;
+    public void aberturaContaCorrente(int idempotecy, long cpfCliente, ContaCorrente contaCorrente) throws RemoteException;
 
-    public void fechamentoContaCorrente(int agencia, long codigoContaCorrente) throws RemoteException;
+    public void fechamentoContaCorrente(int idempotecy, int agencia, long codigoContaCorrente) throws RemoteException;
 
-    public Transacao saque(int agencia, long codigoContaCorrente, BigDecimal valor) throws RemoteException;
+    public Transacao saque(int idempotecy, int agencia, long codigoContaCorrente, BigDecimal valor) throws RemoteException;
 
-    public Transacao deposito(int agencia, long codigoContaCorrente, BigDecimal valor) throws RemoteException;
+    public Transacao deposito(int idempotecy, int agencia, long codigoContaCorrente, BigDecimal valor) throws RemoteException;
 
-    public ContaCorrente saldo(int agencia, long codigoContaCorrente) throws RemoteException;
+    public ContaCorrente saldo(int idempotecy, int agencia, long codigoContaCorrente) throws RemoteException;
 
-    public List<Transacao> extrato(int agencia, long codigoContaCorrente) throws RemoteException;
+    public List<Transacao> extrato(int idempotecy, int agencia, long codigoContaCorrente) throws RemoteException;
 
 }
