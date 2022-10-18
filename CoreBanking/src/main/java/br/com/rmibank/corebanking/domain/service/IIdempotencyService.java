@@ -4,6 +4,6 @@ public interface IIdempotencyService {
     
     public int getIdempotency();
 
-    public boolean verifyIdempotency(int idempotecy);
+    public boolean verifyIdempotency(int idempotency);
 
 }

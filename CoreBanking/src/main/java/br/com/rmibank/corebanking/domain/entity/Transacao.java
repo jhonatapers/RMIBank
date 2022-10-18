@@ -8,6 +8,8 @@ import main.java.br.com.rmibank.corebanking.domain.dto.OperacaoEnum;
 
 public class Transacao implements Serializable {
 
+    private int idempotency;
+
     private long codigoContaCorrente;
 
     private int agencia;

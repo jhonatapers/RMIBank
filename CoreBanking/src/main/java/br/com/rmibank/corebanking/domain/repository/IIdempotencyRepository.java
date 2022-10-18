@@ -6,6 +6,6 @@ public interface IIdempotencyRepository {
 
     public int nextIdempotency();
 
-    public Optional<Integer> findIdempotency(int idempotecy);
+    public Optional<Integer> findIdempotency(int idempotency);
 
 }

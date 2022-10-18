@@ -28,17 +28,17 @@ public class CoreBankingController extends UnicastRemoteObject implements IAgenc
     }
 
     @Override
-    public void cadastroCliente(int idempotecy, Cliente cliente) throws RemoteException {
+    public void cadastroCliente(int idempotency, Cliente cliente) throws RemoteException {
         clienteService.cadastro(cliente);
     }
 
     @Override
-    public List<ContaCorrente> consultaContasCorrentes(int idempotecy, long cpfCliente) throws RemoteException {
+    public List<ContaCorrente> consultaContasCorrentes(int idempotency, long cpfCliente) throws RemoteException {
         return clienteService.contas(cpfCliente);
     }
 
     @Override
-    public void aberturaContaCorrente(int idempotecy, long cpfCliente, ContaCorrente contaCorrente)
+    public void aberturaContaCorrente(int idempotency, long cpfCliente, ContaCorrente contaCorrente)
             throws RemoteException {
         try {
             clienteService.aberturaContaCorrente(cpfCliente, contaCorrente);
@@ -48,12 +48,12 @@ public class CoreBankingController extends UnicastRemoteObject implements IAgenc
     }
 
     @Override
-    public void fechamentoContaCorrente(int idempotecy, int agencia, long codigoContaCorrente) throws RemoteException {
+    public void fechamentoContaCorrente(int idempotency, int agencia, long codigoContaCorrente) throws RemoteException {
         clienteService.enccerraContaCorrente(agencia, codigoContaCorrente);
     }
 
     @Override
-    public Transacao saque(int idempotecy, int agencia, long codigoContaCorrente, BigDecimal valor)
+    public Transacao saque(int idempotency, int agencia, long codigoContaCorrente, BigDecimal valor)
             throws RemoteException {
 
         try {
@@ -69,7 +69,7 @@ public class CoreBankingController extends UnicastRemoteObject implements IAgenc
     }
 
     @Override
-    public Transacao deposito(int idempotecy, int agencia, long codigoContaCorrente, BigDecimal valor)
+    public Transacao deposito(int idempotency, int agencia, long codigoContaCorrente, BigDecimal valor)
             throws RemoteException {
         try {
 
@@ -85,12 +85,12 @@ public class CoreBankingController extends UnicastRemoteObject implements IAgenc
     }
 
     @Override
-    public ContaCorrente saldo(int idempotecy, int agencia, long codigoContaCorrente) throws RemoteException {
+    public ContaCorrente saldo(int idempotency, int agencia, long codigoContaCorrente) throws RemoteException {
         return clienteService.saldo(agencia, codigoContaCorrente);
     }
 
     @Override
-    public List<Transacao> extrato(int idempotecy, int agencia, long codigoContaCorrente) throws RemoteException {
+    public List<Transacao> extrato(int idempotency, int agencia, long codigoContaCorrente) throws RemoteException {
         return transacaoService.extrato(agencia, codigoContaCorrente);
     }
 

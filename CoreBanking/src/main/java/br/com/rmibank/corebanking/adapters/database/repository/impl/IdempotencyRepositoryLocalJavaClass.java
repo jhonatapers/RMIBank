@@ -24,9 +24,9 @@ public class IdempotencyRepositoryLocalJavaClass implements IIdempotencyReposito
     }
 
     @Override
-    public Optional<Integer> findIdempotency(int idempotecy) {
+    public Optional<Integer> findIdempotency(int idempotency) {
 
-        return dataBase.transactions.stream().filter(t -> t == idempotecy).findFirst();
+        return dataBase.transactions.stream().filter(t -> t == idempotency).findFirst();
 
     }
 

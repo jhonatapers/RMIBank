@@ -17,8 +17,8 @@ public class IdempotencyService implements IIdempotencyService {
     }
 
     @Override
-    public boolean verifyIdempotency(int idempotecy) {
-        return idempotencyRepository.findIdempotency(idempotecy).isEmpty();
+    public boolean verifyIdempotency(int idempotency) {
+        return idempotencyRepository.findIdempotency(idempotency).isEmpty();
     }
 
 }
