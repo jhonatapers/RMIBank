@@ -13,7 +13,7 @@ public class BankBranch {
                 .lookup("rmi://localhost:1099/AgenciaController");
 
         IIdempotencyController idempotencyController = (IIdempotencyController) Naming
-                .lookup("rmi://localhost:1099/IdempotencyController");
+                .lookup("rmi://localhost:1099/--");
 
         MenuViewAgencia menu = new MenuViewAgencia(agenciaController, idempotencyController);
 
