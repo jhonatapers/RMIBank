@@ -15,7 +15,7 @@ public class ContaCorrenteView {
         System.out.println(" ------------------ ");
     }
 
-    public static ContaCorrente monta(Scanner sc) {
+    public static ContaCorrente monta(int idempotency, Scanner sc) {
 
         System.out.println("\r\nInforme a AGENCIA:\r\n");
         int agencia = Integer.parseInt(sc.nextLine());
@@ -23,6 +23,6 @@ public class ContaCorrenteView {
         System.out.println("\r\nInforme o numero da CONTA:\r\n");
         long conta = Long.parseLong(sc.nextLine());
 
-        return new ContaCorrente(conta, agencia, new BigDecimal(0.0d));
+        return new ContaCorrente(idempotency, conta, agencia, new BigDecimal(0.0d));
     }
 }

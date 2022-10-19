@@ -51,8 +51,9 @@ public class MenuViewAgencia extends Thread {
                     try {
                         System.out.println("--------CADASTRO DE CLIENTE---------");
 
-                        agenciaController.cadastroCliente(idempotencyController.newIdempotency(),
-                                ClienteView.monta(sc));
+                        int idempotency = idempotencyController.newIdempotency();
+                        agenciaController.cadastroCliente(idempotency,
+                                ClienteView.monta(idempotency, sc));
 
                         System.out.println("------FIM CADASTRO DE CLIENTE-------\n\r\n\r");
 
@@ -81,9 +82,11 @@ public class MenuViewAgencia extends Thread {
 
                         System.out.println("--------ABERTURA CONTA CORRENTE---------");
 
-                        agenciaController.aberturaContaCorrente(idempotencyController.newIdempotency(),
+                        int idempotency = idempotencyController.newIdempotency();
+
+                        agenciaController.aberturaContaCorrente(idempotency,
                                 ClienteView.cpf(sc),
-                                ContaCorrenteView.monta(sc));
+                                ContaCorrenteView.monta(idempotency, sc));
 
                         System.out.println("--------CONTA CORRENTE ABERTA---------\n\r\n\r");
 
@@ -96,8 +99,10 @@ public class MenuViewAgencia extends Thread {
                     try {
                         System.out.println("--------FECHAMENTO CONTA CORRENTE---------");
 
-                        ContaCorrente cc = ContaCorrenteView.monta(sc);
-                        agenciaController.fechamentoContaCorrente(idempotencyController.newIdempotency(),
+                        int idempotency = idempotencyController.newIdempotency();
+
+                        ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
+                        agenciaController.fechamentoContaCorrente(idempotency,
                                 cc.getAgencia(), cc.getCodigoContaCorrente());
 
                         System.out.println("--------CONTA CORRENTE ENCERRADA---------\n\r\n\r");
@@ -111,9 +116,11 @@ public class MenuViewAgencia extends Thread {
 
                         System.out.println("--------SAQUE---------");
 
-                        ContaCorrente cc = ContaCorrenteView.monta(sc);
+                        int idempotency = idempotencyController.newIdempotency();
+
+                        ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
                         TransacaoView
-                                .view(agenciaController.saque(idempotencyController.newIdempotency(), cc.getAgencia(),
+                                .view(agenciaController.saque(idempotency, cc.getAgencia(),
                                         cc.getCodigoContaCorrente(),
                                         TransacaoView.montaValor(sc)));
 
@@ -128,7 +135,9 @@ public class MenuViewAgencia extends Thread {
 
                         System.out.println("--------DEPOSITO---------");
 
-                        ContaCorrente cc = ContaCorrenteView.monta(sc);
+                        int idempotency = idempotencyController.newIdempotency();
+
+                        ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
                         TransacaoView
                                 .view(
                                         agenciaController.deposito(idempotencyController.newIdempotency(),
@@ -146,7 +155,9 @@ public class MenuViewAgencia extends Thread {
 
                         System.out.println("--------SALDO---------");
 
-                        ContaCorrente cc = ContaCorrenteView.monta(sc);
+                        int idempotency = idempotencyController.newIdempotency();
+
+                        ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
                         ContaCorrenteView.view(agenciaController.saldo(cc.getAgencia(), cc.getCodigoContaCorrente()));
 
                         System.out.println("--------SALDO---------\r\n\r\n");
@@ -160,7 +171,9 @@ public class MenuViewAgencia extends Thread {
 
                         System.out.println("--------EXTRATO---------");
 
-                        ContaCorrente cc = ContaCorrenteView.monta(sc);
+                        int idempotency = idempotencyController.newIdempotency();
+
+                        ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
                         agenciaController.extrato(cc.getAgencia(), cc.getCodigoContaCorrente())
                                 .forEach(transacao -> {
                                     TransacaoView.view(transacao);
