@@ -10,11 +10,16 @@ import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrent
 
 public interface IAtmController extends Remote {
 
-    public Transacao saque(int agencia, long codigoContaCorrente, BigDecimal valor) throws RemoteException;
+    public Transacao saque(int idempotency, int agencia, long codigoContaCorrente, BigDecimal valor)
+            throws RemoteException;
 
-    public Transacao deposito(int agencia, long codigoContaCorrente, BigDecimal valor) throws RemoteException;
+    public Transacao deposito(int idempotency, int agencia, long codigoContaCorrente, BigDecimal valor)
+            throws RemoteException;
 
-    public ContaCorrente saldo(int agencia, long codigoContaCorrente) throws RemoteException;
+    public ContaCorrente saldo(int agencia, long codigoContaCorrente)
+            throws RemoteException;
 
-    public List<Transacao> extrato(int agencia, long codigoContaCorrente) throws RemoteException;
+    public List<Transacao> extrato(int agencia, long codigoContaCorrente)
+            throws RemoteException;
+
 }
