@@ -8,16 +8,23 @@ import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrent
 
 public class Cliente implements Serializable {
 
+    private int idempotency;
+
     private long cpf;
 
     private String nome;
 
     private List<ContaCorrente> contasCorrentes;
 
-    public Cliente(long cpf, String nome) {
+    public Cliente(int idempotency, long cpf, String nome) {
+        this.idempotency = idempotency;
         this.cpf = cpf;
         this.nome = nome;
         this.contasCorrentes = new ArrayList<ContaCorrente>();
+    }
+
+    public int getIdempotency() {
+        return idempotency;
     }
 
     public long getCpf() {

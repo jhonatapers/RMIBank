@@ -5,16 +5,23 @@ import java.math.BigDecimal;
 
 public class ContaCorrente implements Serializable {
 
+    private int idempotency;
+
     private long codigoContaCorrente;
 
     private int agencia;
 
     private BigDecimal saldo;
 
-    public ContaCorrente(long codigoContaCorrente, int agencia, BigDecimal saldo) {
+    public ContaCorrente(int idempotency, long codigoContaCorrente, int agencia, BigDecimal saldo) {
+        this.idempotency = idempotency;
         this.codigoContaCorrente = codigoContaCorrente;
         this.agencia = agencia;
         this.saldo = saldo;
+    }
+
+    public int getIdempotency() {
+        return idempotency;
     }
 
     public long getCodigoContaCorrente() {
