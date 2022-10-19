@@ -10,8 +10,6 @@ import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrent
 
 public interface IAtmController extends Remote {
 
-        public int newIdempotency() throws RemoteException;
-
         public Transacao saque(int idempotency, int agencia, long codigoContaCorrente, BigDecimal valor)
                         throws RemoteException;
 

@@ -11,8 +11,6 @@ import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrent
 
 public interface IAgenciaController extends Remote {
 
-    public int newIdempotency() throws RemoteException;
-
     public void cadastroCliente(int idempotency, Cliente cliente) throws RemoteException;
 
     public List<ContaCorrente> consultaContasCorrentes(long cpfCliente) throws RemoteException;

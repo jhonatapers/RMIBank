@@ -12,7 +12,7 @@ public class IdempotencyController implements IIdempotencyController {
     }
 
     @Override
-    public int getIdempotency() {
+    public int newIdempotency() {
         return idempotencyService.newIdempotency();
     }
 

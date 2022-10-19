@@ -35,11 +35,6 @@ public class CoreBankingController extends UnicastRemoteObject implements IAgenc
     }
 
     @Override
-    public int newIdempotency() throws RemoteException {
-        return idempotencyService.newIdempotency();
-    }
-
-    @Override
     public void cadastroCliente(int idempotency, Cliente cliente) throws RemoteException {
         clienteService.cadastro(idempotency, cliente);
     }
