@@ -6,7 +6,9 @@ import main.java.br.com.rmibank.corebanking.adapters.database.repository.impl.Id
 import main.java.br.com.rmibank.corebanking.adapters.database.repository.impl.TransacaoRepositoryLocalJavaClass;
 import main.java.br.com.rmibank.corebanking.domain.controller.IAgenciaController;
 import main.java.br.com.rmibank.corebanking.domain.controller.IAtmController;
+import main.java.br.com.rmibank.corebanking.domain.controller.IIdempotencyController;
 import main.java.br.com.rmibank.corebanking.domain.controller.impl.CoreBankingController;
+import main.java.br.com.rmibank.corebanking.domain.controller.impl.IdempotencyController;
 import main.java.br.com.rmibank.corebanking.domain.repository.IClienteRepository;
 import main.java.br.com.rmibank.corebanking.domain.repository.IIdempotencyRepository;
 import main.java.br.com.rmibank.corebanking.domain.repository.ITransacaoRepository;
@@ -41,12 +43,15 @@ public class CoreBanking {
                 contaCorrenteService,
                 transacaoService);
 
+        IIdempotencyController idempotencyController = new IdempotencyController(idempotencyService);
+
         try {
 
             String serverAdress = "localhost";// args[0];
             int serverPort = Integer.parseInt("1099");// args[1];
 
-            Server server = new Server(serverAdress, serverPort, agenciaController, atmController);
+            Server server = new Server(serverAdress, serverPort, idempotencyController, agenciaController,
+                    atmController);
             server.run();
 
         } catch (Exception e) {
