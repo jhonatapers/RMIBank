@@ -9,15 +9,15 @@ import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrent
 
 public interface IClienteService {
 
-    public void cadastro(Cliente cliente);
+    public void cadastro(int idempotency, Cliente cliente);
 
-    public void aberturaContaCorrente(long cpfCliente, ContaCorrente contaCorrente);
+    public void aberturaContaCorrente(int idempotency, long cpfCliente, ContaCorrente contaCorrente);
 
-    public void enccerraContaCorrente(int agencia, long codigoContaCorrente);
+    public void enccerraContaCorrente(int idempotency, int agencia, long codigoContaCorrente);
 
-    public Transacao saque(int agencia, long codigoContaCorrente, BigDecimal valor);
+    public Transacao saque(int idempotency, int agencia, long codigoContaCorrente, BigDecimal valor);
 
-    public Transacao deposito(int agencia, long codigoContaCorrente, BigDecimal valor);
+    public Transacao deposito(int idempotency, int agencia, long codigoContaCorrente, BigDecimal valor);
 
     public ContaCorrente saldo(int agencia, long codigoContaCorrente);
 

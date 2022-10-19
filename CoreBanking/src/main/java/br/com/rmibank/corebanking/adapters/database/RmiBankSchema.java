@@ -14,10 +14,13 @@ public class RmiBankSchema {
 
     public List<Integer> transactions;
 
+    public List<Integer> generatedIdempotencies;
+
     public RmiBankSchema() {
         this.clientes = new ArrayList<Cliente>();
         this.transacoes = new ArrayList<Transacao>();
         this.transactions = new ArrayList<Integer>();
+        this.generatedIdempotencies = new ArrayList<>();
     }
 
 }

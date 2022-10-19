@@ -4,8 +4,14 @@ import java.util.Optional;
 
 public interface IIdempotencyRepository {
 
-    public int nextIdempotency();
+    public int newIdempotency();
+    
+    public void saveGeneratedIdempotency(int idempotency);
 
-    public Optional<Integer> findIdempotency(int idempotency);
+    public Optional<Integer> findGeneratedIdempotency(int idempotency);
+
+    public Optional<Integer> findTransaction(int idempotency);
+
+    public void concludeTransaction(int idempotency);
 
 }
