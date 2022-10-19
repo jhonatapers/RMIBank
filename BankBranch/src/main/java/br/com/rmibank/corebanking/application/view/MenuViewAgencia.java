@@ -3,6 +3,7 @@ package main.java.br.com.rmibank.corebanking.application.view;
 import java.util.Scanner;
 
 import main.java.br.com.rmibank.corebanking.domain.controller.IAgenciaController;
+import main.java.br.com.rmibank.corebanking.domain.controller.IIdempotencyController;
 import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrente;
 
 public class MenuViewAgencia extends Thread {
@@ -11,8 +12,11 @@ public class MenuViewAgencia extends Thread {
 
     private IAgenciaController agenciaController;
 
-    public MenuViewAgencia(IAgenciaController agenciaController) {
+    private IIdempotencyController idempotencyController;
+
+    public MenuViewAgencia(IAgenciaController agenciaController, IIdempotencyController idempotencyController) {
         this.agenciaController = agenciaController;
+        this.idempotencyController = idempotencyController;
     }
 
     @Override
@@ -47,7 +51,8 @@ public class MenuViewAgencia extends Thread {
                     try {
                         System.out.println("--------CADASTRO DE CLIENTE---------");
 
-                        agenciaController.cadastroCliente(ClienteView.monta(sc));
+                        agenciaController.cadastroCliente(idempotencyController.newIdempotency(),
+                                ClienteView.monta(sc));
 
                         System.out.println("------FIM CADASTRO DE CLIENTE-------\n\r\n\r");
 
@@ -76,7 +81,8 @@ public class MenuViewAgencia extends Thread {
 
                         System.out.println("--------ABERTURA CONTA CORRENTE---------");
 
-                        agenciaController.aberturaContaCorrente(ClienteView.cpf(sc),
+                        agenciaController.aberturaContaCorrente(idempotencyController.newIdempotency(),
+                                ClienteView.cpf(sc),
                                 ContaCorrenteView.monta(sc));
 
                         System.out.println("--------CONTA CORRENTE ABERTA---------\n\r\n\r");
@@ -91,7 +97,8 @@ public class MenuViewAgencia extends Thread {
                         System.out.println("--------FECHAMENTO CONTA CORRENTE---------");
 
                         ContaCorrente cc = ContaCorrenteView.monta(sc);
-                        agenciaController.fechamentoContaCorrente(cc.getAgencia(), cc.getCodigoContaCorrente());
+                        agenciaController.fechamentoContaCorrente(idempotencyController.newIdempotency(),
+                                cc.getAgencia(), cc.getCodigoContaCorrente());
 
                         System.out.println("--------CONTA CORRENTE ENCERRADA---------\n\r\n\r");
 
@@ -106,7 +113,8 @@ public class MenuViewAgencia extends Thread {
 
                         ContaCorrente cc = ContaCorrenteView.monta(sc);
                         TransacaoView
-                                .view(agenciaController.saque(cc.getAgencia(), cc.getCodigoContaCorrente(),
+                                .view(agenciaController.saque(idempotencyController.newIdempotency(), cc.getAgencia(),
+                                        cc.getCodigoContaCorrente(),
                                         TransacaoView.montaValor(sc)));
 
                         System.out.println("--------SAQUE---------\r\n\n\r");
@@ -123,7 +131,8 @@ public class MenuViewAgencia extends Thread {
                         ContaCorrente cc = ContaCorrenteView.monta(sc);
                         TransacaoView
                                 .view(
-                                        agenciaController.deposito(cc.getAgencia(), cc.getCodigoContaCorrente(),
+                                        agenciaController.deposito(idempotencyController.newIdempotency(),
+                                                cc.getAgencia(), cc.getCodigoContaCorrente(),
                                                 TransacaoView.montaValor(sc)));
 
                         System.out.println("--------DEPOSITO---------\r\n\r\n");
