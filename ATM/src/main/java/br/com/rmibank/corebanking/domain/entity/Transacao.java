@@ -8,6 +8,8 @@ import main.java.br.com.rmibank.corebanking.domain.dto.OperacaoEnum;
 
 public class Transacao implements Serializable {
 
+    private int idempotency;
+
     private long codigoContaCorrente;
 
     private int agencia;
@@ -18,11 +20,16 @@ public class Transacao implements Serializable {
 
     private LocalDateTime data;
 
-    public Transacao(int agencia, long codigoContaCorrente, BigDecimal valor, OperacaoEnum operacao) {
+    public Transacao(int idempotency, int agencia, long codigoContaCorrente, BigDecimal valor, OperacaoEnum operacao) {
+        this.idempotency = idempotency;
         this.codigoContaCorrente = codigoContaCorrente;
         this.valor = valor;
         this.operacao = operacao;
         this.data = LocalDateTime.now();
+    }
+
+    public int getIdempotency() {
+        return idempotency;
     }
 
     public long getCodigoContaCorrente() {
@@ -44,5 +51,5 @@ public class Transacao implements Serializable {
     public LocalDateTime getData() {
         return data;
     }
-    
+
 }

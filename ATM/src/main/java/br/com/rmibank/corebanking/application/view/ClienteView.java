@@ -11,14 +11,14 @@ public class ClienteView {
         return Long.parseLong(sc.nextLine());
     }
 
-    public static Cliente monta(Scanner sc) {
+    public static Cliente monta(int idempotency, Scanner sc) {
 
         long cpf = cpf(sc);
 
         System.out.println("\r\nInforme NOME:");
         String nome = sc.nextLine();
 
-        return new Cliente(cpf, nome);
+        return new Cliente(idempotency, cpf, nome);
 
     }
 
@@ -29,5 +29,5 @@ public class ClienteView {
         System.out.println(" CPF : " + String.format("%011d", cliente.getCpf()));
         System.out.println(" ------------------ ");
     }
-    
+
 }

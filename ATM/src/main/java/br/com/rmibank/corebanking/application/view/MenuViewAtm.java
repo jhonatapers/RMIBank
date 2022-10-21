@@ -3,6 +3,7 @@ package main.java.br.com.rmibank.corebanking.application.view;
 import java.util.Scanner;
 
 import main.java.br.com.rmibank.corebanking.domain.controller.IAtmController;
+import main.java.br.com.rmibank.corebanking.domain.controller.IIdempotencyController;
 import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrente;
 
 public class MenuViewAtm extends Thread {
@@ -11,8 +12,11 @@ public class MenuViewAtm extends Thread {
 
     private IAtmController atmController;
 
-    public MenuViewAtm(IAtmController atmController) {
+    private IIdempotencyController idempotencyController;
+
+    public MenuViewAtm(IAtmController atmController, IIdempotencyController idempotencyController) {
         this.atmController = atmController;
+        this.idempotencyController = idempotencyController;
     }
 
     @Override
@@ -40,69 +44,78 @@ public class MenuViewAtm extends Thread {
                     clearScreen();
                     break;
                 case "1":
-                    try {
+                try {
 
-                        System.out.println("--------SAQUE---------");
+                    System.out.println("--------SAQUE---------");
 
-                        ContaCorrente cc = ContaCorrenteView.monta(sc);
-                        TransacaoView
-                                .view(atmController.saque(cc.getAgencia(), cc.getCodigoContaCorrente(),
-                                        TransacaoView.montaValor(sc)));
+                    int idempotency = idempotencyController.newIdempotency();
 
-                        System.out.println("--------SAQUE---------\r\n\n\r");
+                    ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
+                    TransacaoView
+                            .view(atmController.saque(idempotency, cc.getAgencia(),
+                                    cc.getCodigoContaCorrente(),
+                                    TransacaoView.montaValor(sc)));
 
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
+                    System.out.println("--------SAQUE---------\r\n\n\r");
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
                 case "2":
-                    try {
+                try {
 
-                        System.out.println("--------DEPOSITO---------");
+                    System.out.println("--------DEPOSITO---------");
 
-                        ContaCorrente cc = ContaCorrenteView.monta(sc);
-                        TransacaoView
-                                .view(
-                                    atmController.deposito(cc.getAgencia(), cc.getCodigoContaCorrente(),
-                                                TransacaoView.montaValor(sc)));
+                    int idempotency = idempotencyController.newIdempotency();
 
-                        System.out.println("--------DEPOSITO---------\r\n\r\n");
+                    ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
+                    TransacaoView
+                            .view(
+                                    atmController.deposito(idempotencyController.newIdempotency(),
+                                            cc.getAgencia(), cc.getCodigoContaCorrente(),
+                                            TransacaoView.montaValor(sc)));
 
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
+                    System.out.println("--------DEPOSITO---------\r\n\r\n");
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
                 case "3":
-                    try {
+                try {
 
-                        System.out.println("--------SALDO---------");
+                    System.out.println("--------SALDO---------");
 
-                        ContaCorrente cc = ContaCorrenteView.monta(sc);
-                        ContaCorrenteView.view(atmController.saldo(cc.getAgencia(), cc.getCodigoContaCorrente()));
+                    int idempotency = idempotencyController.newIdempotency();
 
-                        System.out.println("--------SALDO---------\r\n\r\n");
+                    ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
+                    ContaCorrenteView.view(atmController.saldo(cc.getAgencia(), cc.getCodigoContaCorrente()));
 
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
+                    System.out.println("--------SALDO---------\r\n\r\n");
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
                 case "4":
-                    try {
+                try {
 
-                        System.out.println("--------EXTRATO---------");
+                    System.out.println("--------EXTRATO---------");
 
-                        ContaCorrente cc = ContaCorrenteView.monta(sc);
-                        atmController.extrato(cc.getAgencia(), cc.getCodigoContaCorrente())
-                                .forEach(transacao -> {
-                                    TransacaoView.view(transacao);
-                                });
+                    int idempotency = idempotencyController.newIdempotency();
 
-                        System.out.println("--------EXTRATO---------\r\n\r\n");
+                    ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
+                    atmController.extrato(cc.getAgencia(), cc.getCodigoContaCorrente())
+                            .forEach(transacao -> {
+                                TransacaoView.view(transacao);
+                            });
 
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
+                    System.out.println("--------EXTRATO---------\r\n\r\n");
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
                 default:
                     System.out.println("Comando nao reconhecido");
                     break;
