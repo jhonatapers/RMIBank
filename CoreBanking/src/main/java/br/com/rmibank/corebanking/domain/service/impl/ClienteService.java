@@ -79,8 +79,10 @@ public class ClienteService implements IClienteService {
             throw new RuntimeException("Idempotency incorreto");
 
         ContaCorrente contaCorrente = clienteRepository.getContaCorrente(agencia, codigoContaCorrente);
-        if (contaCorrente.getSaldo().compareTo(valor) == -1)
+        if (contaCorrente.getSaldo().compareTo(valor) == -1) {
+            idempotencyService.concludeTransaction(idempotency);
             throw new RuntimeException("Saldo insuficiente");
+        }
 
         try {
 
@@ -111,8 +113,10 @@ public class ClienteService implements IClienteService {
             throw new RuntimeException("Idempotency incorreto");
 
         ContaCorrente contaCorrente = clienteRepository.getContaCorrente(agencia, codigoContaCorrente);
-        if (contaCorrente.getSaldo().compareTo(valor) == 1)
+        if (contaCorrente.getSaldo().compareTo(valor) == 1) {
+            idempotencyService.concludeTransaction(idempotency);
             throw new RuntimeException("Valor inválido");
+        }
 
         try {
 
