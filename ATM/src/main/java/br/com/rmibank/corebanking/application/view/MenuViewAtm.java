@@ -44,78 +44,78 @@ public class MenuViewAtm extends Thread {
                     clearScreen();
                     break;
                 case "1":
-                try {
+                    try {
 
-                    System.out.println("--------SAQUE---------");
+                        System.out.println("--------SAQUE---------");
 
-                    int idempotency = idempotencyController.newIdempotency();
+                        int idempotency = idempotencyController.newIdempotency();
 
-                    ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
-                    TransacaoView
-                            .view(atmController.saque(idempotency, cc.getAgencia(),
-                                    cc.getCodigoContaCorrente(),
-                                    TransacaoView.montaValor(sc)));
+                        ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
+                        TransacaoView
+                                .view(atmController.saque(idempotency, cc.getAgencia(),
+                                        cc.getCodigoContaCorrente(),
+                                        TransacaoView.montaValor(sc)));
 
-                    System.out.println("--------SAQUE---------\r\n\n\r");
+                        System.out.println("--------SAQUE---------\r\n\n\r");
 
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                 case "2":
-                try {
+                    try {
 
-                    System.out.println("--------DEPOSITO---------");
+                        System.out.println("--------DEPOSITO---------");
 
-                    int idempotency = idempotencyController.newIdempotency();
+                        int idempotency = idempotencyController.newIdempotency();
 
-                    ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
-                    TransacaoView
-                            .view(
-                                    atmController.deposito(idempotencyController.newIdempotency(),
-                                            cc.getAgencia(), cc.getCodigoContaCorrente(),
-                                            TransacaoView.montaValor(sc)));
+                        ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
+                        TransacaoView
+                                .view(
+                                        atmController.deposito(idempotencyController.newIdempotency(),
+                                                cc.getAgencia(), cc.getCodigoContaCorrente(),
+                                                TransacaoView.montaValor(sc)));
 
-                    System.out.println("--------DEPOSITO---------\r\n\r\n");
+                        System.out.println("--------DEPOSITO---------\r\n\r\n");
 
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
                 case "3":
-                try {
+                    try {
 
-                    System.out.println("--------SALDO---------");
+                        System.out.println("--------SALDO---------");
 
-                    int idempotency = idempotencyController.newIdempotency();
+                        int idempotency = idempotencyController.newIdempotency();
 
-                    ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
-                    ContaCorrenteView.view(atmController.saldo(cc.getAgencia(), cc.getCodigoContaCorrente()));
+                        ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
+                        ContaCorrenteView.view(atmController.saldo(cc.getAgencia(), cc.getCodigoContaCorrente()));
 
-                    System.out.println("--------SALDO---------\r\n\r\n");
+                        System.out.println("--------SALDO---------\r\n\r\n");
 
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
                 case "4":
-                try {
+                    try {
 
-                    System.out.println("--------EXTRATO---------");
+                        System.out.println("--------EXTRATO---------");
 
-                    int idempotency = idempotencyController.newIdempotency();
+                        int idempotency = idempotencyController.newIdempotency();
 
-                    ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
-                    atmController.extrato(cc.getAgencia(), cc.getCodigoContaCorrente())
-                            .forEach(transacao -> {
-                                TransacaoView.view(transacao);
-                            });
+                        ContaCorrente cc = ContaCorrenteView.monta(idempotency, sc);
+                        atmController.extrato(cc.getAgencia(), cc.getCodigoContaCorrente())
+                                .forEach(transacao -> {
+                                    TransacaoView.view(transacao);
+                                });
 
-                    System.out.println("--------EXTRATO---------\r\n\r\n");
+                        System.out.println("--------EXTRATO---------\r\n\r\n");
 
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
                 default:
                     System.out.println("Comando nao reconhecido");
                     break;
@@ -124,7 +124,7 @@ public class MenuViewAtm extends Thread {
         }
 
     }
-    
+
     private static void printLogo() {
         System.out.println("  _____  __  __ _____ ____              _    ");
         System.out.println(" |  __ \\|  \\/  |_   _|  _ \\            | |   ");
