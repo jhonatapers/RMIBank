@@ -32,17 +32,44 @@ public class IdempotencyService implements IIdempotencyService {
 
     @Override
     public boolean verifyIdempotency(int idempotency) {
-        return idempotencyRepository.findGeneratedIdempotency(idempotency).isPresent();
+
+        try {
+            mutex.acquire();
+            return idempotencyRepository.findGeneratedIdempotency(idempotency).isPresent();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            mutex.release();
+        }
+
     }
 
     @Override
     public boolean existsTransaction(int idempotency) {
-        return idempotencyRepository.findTransaction(idempotency).isPresent();
+
+        try {
+            mutex.acquire();
+            return idempotencyRepository.findTransaction(idempotency).isPresent();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            mutex.release();
+        }
+
     }
 
     @Override
     public void concludeTransaction(int idempotency) {
-        idempotencyRepository.concludeTransaction(idempotency);
+
+        try {
+            mutex.acquire();
+            idempotencyRepository.concludeTransaction(idempotency);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            mutex.release();
+        }
+
     }
 
 }
