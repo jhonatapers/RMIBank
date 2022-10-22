@@ -24,7 +24,7 @@ public class IdempotencyRepositoryLocalJavaClass implements IIdempotencyReposito
             mutex.acquire();
 
             if (dataBase.transactions.size() == 0)
-                return 1;
+                return 0;
 
             return dataBase.transactions.size();
 
