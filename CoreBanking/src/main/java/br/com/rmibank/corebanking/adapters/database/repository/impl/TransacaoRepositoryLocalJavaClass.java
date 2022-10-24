@@ -18,6 +18,14 @@ public class TransacaoRepositoryLocalJavaClass implements ITransacaoRepository {
     @Override
     public List<Transacao> findByContaCorrente(int agencia, long codigoContaCorrente) {
 
+        dataBase.transacoes
+                .stream()
+                .filter(t -> t.getAgencia() == agencia && t.getCodigoContaCorrente() == codigoContaCorrente)
+                .findFirst()
+                .orElseThrow(() -> {
+                    throw new RuntimeException("Conta não existe");
+                });
+
         return dataBase.transacoes
                 .stream()
                 .filter(t -> t.getAgencia() == agencia && t.getCodigoContaCorrente() == codigoContaCorrente)
