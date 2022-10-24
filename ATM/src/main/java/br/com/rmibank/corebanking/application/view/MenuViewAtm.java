@@ -61,6 +61,7 @@ public class MenuViewAtm extends Thread {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
+                    break;
                 case "2":
                     try {
 
