@@ -89,13 +89,7 @@ public class ClienteRepositoryLocalJavaClass implements IClienteRepository {
 
             dataBase.clientes
                     .stream()
-                    .filter(c -> c.getContasCorrentes()
-                            .stream()
-                            .filter(cc -> {
-                                return cc.getAgencia() == agencia && cc.getCodigoContaCorrente() == codigoContaCorrente;
-                            })
-                            .findFirst()
-                            .isPresent())
+                    .filter(c -> c.getCpf() == cpfCliente)
                     .findFirst()
                     .orElseThrow(() -> {
                         throw new RuntimeException("Cliente não cadastrado");

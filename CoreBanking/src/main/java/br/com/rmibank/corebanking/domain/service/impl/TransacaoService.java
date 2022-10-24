@@ -23,7 +23,7 @@ public class TransacaoService implements ITransacaoService {
     public void armazenaTransacao(int idempotency, Transacao transacao) {
 
         if (idempotencyService.existsTransaction(idempotency))
-            throw new IdempotencyException("Transacao já efetuada");
+            throw new IdempotencyException("idempotency já utilizado (idempotency error)");
 
         try {
             transacaoRepository.save(transacao);

@@ -33,7 +33,7 @@ public class ClienteService implements IClienteService {
         if (ValidaCpf.isCPF(cliente.getCpf())) {
 
             if (idempotencyService.existsTransaction(idempotency))
-                throw new RuntimeException("Cadastro de cliente já realizado!");
+                throw new RuntimeException("idempotency já utilizado (idempotency error)");
 
             clienteRepository.save(cliente);
 
@@ -51,7 +51,7 @@ public class ClienteService implements IClienteService {
             throw new RuntimeException("Idempotency incorreto");
 
         if (idempotencyService.existsTransaction(idempotency))
-            throw new RuntimeException("Cadastro de conta corrente já realizado!");
+            throw new RuntimeException("idempotency já utilizado (idempotency error)");
 
         try {
             clienteRepository.newContaCorrente(cpfCliente, contaCorrente);
@@ -70,7 +70,7 @@ public class ClienteService implements IClienteService {
             throw new RuntimeException("Idempotency incorreto");
 
         if (idempotencyService.existsTransaction(idempotency))
-            throw new RuntimeException("Cadastro de conta corrente já realizado!");
+            throw new RuntimeException("idempotency já utilizado (idempotency error)");
 
         clienteRepository.encerraContaCorrente(agencia, codigoContaCorrente);
 
@@ -92,7 +92,7 @@ public class ClienteService implements IClienteService {
         try {
 
             if (idempotencyService.existsTransaction(idempotency))
-                throw new IdempotencyException("Operacao de saque já efetuada!");
+                throw new IdempotencyException("idempotency já utilizado (idempotency error)");
 
             contaCorrente.setSaldo(contaCorrente.getSaldo().subtract(valor));
 
@@ -126,7 +126,7 @@ public class ClienteService implements IClienteService {
         try {
 
             if (idempotencyService.existsTransaction(idempotency))
-                throw new IdempotencyException("Operacao de saque já efetuada!");
+                throw new IdempotencyException("idempotency já utilizado (idempotency error)");
 
             contaCorrente.setSaldo(contaCorrente.getSaldo().add(valor));
 

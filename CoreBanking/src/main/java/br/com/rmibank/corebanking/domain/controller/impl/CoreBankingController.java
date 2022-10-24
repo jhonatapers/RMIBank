@@ -41,7 +41,9 @@ public class CoreBankingController extends UnicastRemoteObject implements IAgenc
 
     @Override
     public List<ContaCorrente> consultaContasCorrentes(long cpfCliente) throws RemoteException {
-        return clienteService.contas(cpfCliente);
+        List<ContaCorrente> teste =  clienteService.contas(cpfCliente);
+        
+        return teste;
     }
 
     @Override
