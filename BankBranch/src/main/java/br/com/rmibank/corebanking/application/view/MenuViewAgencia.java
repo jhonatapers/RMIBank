@@ -227,6 +227,13 @@ public class MenuViewAgencia extends Thread {
                         idempotency = idempotencyController.newIdempotency();
 
                         try {
+                            agenciaController.aberturaContaCorrente(idempotency, 2574855035L,
+                                    new ContaCorrente(idempotency, 123L, 1, new BigDecimal(0.0d)));
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        try {
                             agenciaController.aberturaContaCorrente(idempotency, 25748550368L,
                                     new ContaCorrente(idempotency, 123L, 1, new BigDecimal(0.0d)));
 
@@ -234,38 +241,10 @@ public class MenuViewAgencia extends Thread {
                             System.out.println(e.getMessage());
                         }
 
-                        try {
-                            agenciaController.aberturaContaCorrente(idempotency, 2574855035L,
-                                    new ContaCorrente(idempotency, 123L, 1, new BigDecimal(0.0d)));
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-
-                        System.out.println("4- REUTILIAR MESMO IDEMPOTENCY cadastro de conta");
+                        System.out.println("4- REUTILIAR MESMO IDEMPOTENCY deposito / saque");
                         idempotency = idempotencyController.newIdempotency();
 
                         try {
-                            agenciaController.aberturaContaCorrente(idempotency, 2574855035L,
-                                    new ContaCorrente(idempotency, 123, 1, new BigDecimal(0.00)));
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-
-                        try {
-                            agenciaController.aberturaContaCorrente(idempotency, 2574855035L,
-                                    new ContaCorrente(idempotency, 123, 1, new BigDecimal(0.00)));
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-
-                        System.out.println("5- REUTILIAR MESMO IDEMPOTENCY deposito / saque");
-                        idempotency = idempotencyController.newIdempotency();
-
-                        try {
-                            int idempotencyCerto = idempotencyController.newIdempotency();
-                            agenciaController.aberturaContaCorrente(idempotencyController.newIdempotency(), 2574855035L,
-                                    new ContaCorrente(idempotencyCerto, 123, 1, new BigDecimal(0.00)));
-
                             agenciaController.deposito(idempotency, 1, 123L, new BigDecimal(1000.00));
                         } catch (Exception e) {
                             System.out.println(e.getMessage());
