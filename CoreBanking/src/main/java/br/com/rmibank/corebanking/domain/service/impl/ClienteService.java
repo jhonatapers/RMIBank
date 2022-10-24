@@ -92,20 +92,17 @@ public class ClienteService implements IClienteService {
         try {
 
             if (idempotencyService.existsTransaction(idempotency))
-                throw new IdempotencyException("idempotency já utilizado (idempotency error)");
+                throw new RuntimeException("idempotency já utilizado (idempotency error)");
 
             contaCorrente.setSaldo(contaCorrente.getSaldo().subtract(valor));
 
             Transacao transacao = new Transacao(idempotency, agencia, codigoContaCorrente, valor, OperacaoEnum.SAQUE);
 
-            idempotencyService.concludeTransaction(idempotency);
-
             return transacao;
 
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
-
-            contaCorrente.setSaldo(contaCorrente.getSaldo().add(valor));
-
             throw new RuntimeException("Erro durante operacao de saque!");
         }
 
@@ -118,7 +115,7 @@ public class ClienteService implements IClienteService {
             throw new RuntimeException("Idempotency incorreto");
 
         ContaCorrente contaCorrente = clienteRepository.getContaCorrente(agencia, codigoContaCorrente);
-        if (contaCorrente.getSaldo().compareTo(valor) == 1) {
+        if (new BigDecimal(0.01).compareTo(valor) == 1) {
             idempotencyService.concludeTransaction(idempotency);
             throw new RuntimeException("Valor inválido");
         }
@@ -126,21 +123,18 @@ public class ClienteService implements IClienteService {
         try {
 
             if (idempotencyService.existsTransaction(idempotency))
-                throw new IdempotencyException("idempotency já utilizado (idempotency error)");
+                throw new RuntimeException("idempotency já utilizado (idempotency error)");
 
             contaCorrente.setSaldo(contaCorrente.getSaldo().add(valor));
 
             Transacao transacao = new Transacao(idempotency, agencia, codigoContaCorrente, valor,
                     OperacaoEnum.DEPOSITO);
 
-            idempotencyService.concludeTransaction(idempotency);
-
             return transacao;
 
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
-
-            contaCorrente.setSaldo(contaCorrente.getSaldo().subtract(valor));
-
             throw new RuntimeException("Erro durante operacao de deposito!");
         }
 
