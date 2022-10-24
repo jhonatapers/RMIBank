@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import main.java.br.com.rmibank.corebanking.domain.controller.IAgenciaController;
 import main.java.br.com.rmibank.corebanking.domain.controller.IIdempotencyController;
+import main.java.br.com.rmibank.corebanking.domain.entity.Cliente;
 import main.java.br.com.rmibank.corebanking.domain.entity.aggregate.ContaCorrente;
 
 public class MenuViewAgencia extends Thread {
@@ -207,7 +208,22 @@ public class MenuViewAgencia extends Thread {
                             System.out.println(e.getMessage());
                         }
 
-                        System.out.println("2- REUTILIAR MESMO IDEMPOTENCY");
+                        System.out.println("2- REUTILIAR MESMO IDEMPOTENCY cadastro de cliente");
+                        idempotency = idempotencyController.newIdempotency();
+
+                        try {
+                            agenciaController.cadastroCliente(idempotency, new Cliente(idempotency, 2574855035L, "J"));
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        try {
+                            agenciaController.cadastroCliente(idempotency, new Cliente(idempotency, 2574855035L, "JP"));
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        System.out.println("3- REUTILIAR MESMO IDEMPOTENCY abertura de conta");
                         idempotency = idempotencyController.newIdempotency();
 
                         try {
@@ -221,6 +237,42 @@ public class MenuViewAgencia extends Thread {
                         try {
                             agenciaController.aberturaContaCorrente(idempotency, 2574855035L,
                                     new ContaCorrente(idempotency, 123L, 1, new BigDecimal(0.0d)));
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        System.out.println("4- REUTILIAR MESMO IDEMPOTENCY cadastro de conta");
+                        idempotency = idempotencyController.newIdempotency();
+
+                        try {
+                            agenciaController.aberturaContaCorrente(idempotency, 2574855035L,
+                                    new ContaCorrente(idempotency, 123, 1, new BigDecimal(0.00)));
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        try {
+                            agenciaController.aberturaContaCorrente(idempotency, 2574855035L,
+                                    new ContaCorrente(idempotency, 123, 1, new BigDecimal(0.00)));
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        System.out.println("5- REUTILIAR MESMO IDEMPOTENCY deposito / saque");
+                        idempotency = idempotencyController.newIdempotency();
+
+                        try {
+                            int idempotencyCerto = idempotencyController.newIdempotency();
+                            agenciaController.aberturaContaCorrente(idempotencyController.newIdempotency(), 2574855035L,
+                                    new ContaCorrente(idempotencyCerto, 123, 1, new BigDecimal(0.00)));
+
+                            agenciaController.deposito(idempotency, 1, 123L, new BigDecimal(1000.00));
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        try {
+                            agenciaController.saque(idempotency, 1, 123L, new BigDecimal(1000.00));
                         } catch (Exception e) {
                             System.out.println(e.getMessage());
                         }
