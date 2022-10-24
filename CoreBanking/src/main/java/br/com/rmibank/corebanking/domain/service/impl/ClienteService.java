@@ -33,7 +33,7 @@ public class ClienteService implements IClienteService {
         if (ValidaCpf.isCPF(cliente.getCpf())) {
 
             if (idempotencyService.existsTransaction(idempotency))
-                throw new IdempotencyException("Cadastro de cliente já realizado!");
+                throw new RuntimeException("Cadastro de cliente já realizado!");
 
             clienteRepository.save(cliente);
 
@@ -51,11 +51,16 @@ public class ClienteService implements IClienteService {
             throw new RuntimeException("Idempotency incorreto");
 
         if (idempotencyService.existsTransaction(idempotency))
-            throw new IdempotencyException("Cadastro de conta corrente já realizado!");
+            throw new RuntimeException("Cadastro de conta corrente já realizado!");
 
-        clienteRepository.newContaCorrente(cpfCliente, contaCorrente);
+        try {
+            clienteRepository.newContaCorrente(cpfCliente, contaCorrente);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            idempotencyService.concludeTransaction(idempotency);
+        }
 
-        idempotencyService.concludeTransaction(idempotency);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class ClienteService implements IClienteService {
             throw new RuntimeException("Idempotency incorreto");
 
         if (idempotencyService.existsTransaction(idempotency))
-            throw new IdempotencyException("Cadastro de conta corrente já realizado!");
+            throw new RuntimeException("Cadastro de conta corrente já realizado!");
 
         clienteRepository.encerraContaCorrente(agencia, codigoContaCorrente);
 

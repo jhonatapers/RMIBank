@@ -1,5 +1,6 @@
 package main.java.br.com.rmibank.corebanking.application.view;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 import main.java.br.com.rmibank.corebanking.domain.controller.IAgenciaController;
@@ -180,6 +181,53 @@ public class MenuViewAgencia extends Thread {
                                 });
 
                         System.out.println("--------EXTRATO---------\r\n\r\n");
+
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case "script":
+                    try {
+
+                        System.out.println("--------SCRIPT DE ERROS---------");
+
+                        int idempotency = 0;
+
+                        try {
+
+                            System.out.println("1- IDEMPOTENCY NAO GERADO PELO SERVIDOR");
+                            idempotency = 999999;
+
+                            agenciaController.aberturaContaCorrente(idempotency, 2574855035L,
+                                    new ContaCorrente(idempotency, 123L, 1, new BigDecimal(0.0d)));
+
+                            System.out.println("---------------------------------");
+
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        System.out.println("2- REUTILIAR MESMO IDEMPOTENCY");
+                        idempotency = idempotencyController.newIdempotency();
+
+                        try {
+                            agenciaController.aberturaContaCorrente(idempotency, 25748550368L,
+                                    new ContaCorrente(idempotency, 123L, 1, new BigDecimal(0.0d)));
+
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        try {
+                            agenciaController.aberturaContaCorrente(idempotency, 2574855035L,
+                                    new ContaCorrente(idempotency, 123L, 1, new BigDecimal(0.0d)));
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        System.out.println("---------------------------------");
+
+                        System.out.println("--------SCRIPT DE ERROS---------\r\n\r\n");
 
                     } catch (Exception e) {
                         System.out.println(e.getMessage());

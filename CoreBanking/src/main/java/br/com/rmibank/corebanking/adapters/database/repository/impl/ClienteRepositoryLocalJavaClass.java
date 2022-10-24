@@ -2,6 +2,7 @@ package main.java.br.com.rmibank.corebanking.adapters.database.repository.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Semaphore;
 
 import main.java.br.com.rmibank.corebanking.adapters.database.RmiBankSchema;
 import main.java.br.com.rmibank.corebanking.domain.entity.Cliente;
@@ -12,8 +13,11 @@ public class ClienteRepositoryLocalJavaClass implements IClienteRepository {
 
     private RmiBankSchema dataBase;
 
+    private Semaphore mutex;
+
     public ClienteRepositoryLocalJavaClass(RmiBankSchema dataBase) {
         this.dataBase = dataBase;
+        this.mutex = new Semaphore(1);
     }
 
     @Override
@@ -32,14 +36,32 @@ public class ClienteRepositoryLocalJavaClass implements IClienteRepository {
         if (dataBase.clientes.stream().filter(c -> c.getCpf() == cliente.getCpf()).findFirst().isPresent())
             throw new RuntimeException("Cliente já cadastrado");
 
-        dataBase.clientes.add(cliente);
+        try {
+            mutex.acquire();
+
+            dataBase.clientes.add(cliente);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro interno 500");
+        } finally {
+            mutex.release();
+        }
 
     }
 
     public void update(Cliente cliente) {
 
-        dataBase.clientes.removeIf(c -> c.getCpf() == cliente.getCpf());
-        dataBase.clientes.add(cliente);
+        try {
+            mutex.acquire();
+
+            dataBase.clientes.removeIf(c -> c.getCpf() == cliente.getCpf());
+            dataBase.clientes.add(cliente);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro interno 500");
+        } finally {
+            mutex.release();
+        }
 
     }
 
@@ -49,55 +71,75 @@ public class ClienteRepositoryLocalJavaClass implements IClienteRepository {
         final long codigoContaCorrente = contaCorrente.getCodigoContaCorrente();
         final int agencia = contaCorrente.getAgencia();
 
-        dataBase.clientes
-                .stream()
-                .filter(c -> c.getContasCorrentes()
-                        .stream()
-                        .filter(cc -> {
-                            return cc.getAgencia() == agencia && cc.getCodigoContaCorrente() == codigoContaCorrente;
-                        })
-                        .findFirst()
-                        .isPresent())
-                .findFirst()
-                .ifPresentOrElse((value) -> {
-                    throw new RuntimeException("Conta e Agencia já existem!");
-                }, () -> {
+        try {
+            mutex.acquire();
 
-                    findByCpf(cpfCliente)
-                            .ifPresentOrElse((c) -> {
+            dataBase.clientes
+                    .stream()
+                    .filter(c -> c.getContasCorrentes()
+                            .stream()
+                            .filter(cc -> cc.getAgencia() == agencia
+                                    && cc.getCodigoContaCorrente() == codigoContaCorrente)
+                            .findFirst()
+                            .isPresent())
+                    .findFirst()
+                    .ifPresent(c -> {
+                        throw new RuntimeException("Conta e Agencia já existem!");
+                    });
 
-                                c.addContaCorrente(contaCorrente);
+            dataBase.clientes
+                    .stream()
+                    .filter(c -> c.getContasCorrentes()
+                            .stream()
+                            .filter(cc -> {
+                                return cc.getAgencia() == agencia && cc.getCodigoContaCorrente() == codigoContaCorrente;
+                            })
+                            .findFirst()
+                            .isPresent())
+                    .findFirst()
+                    .orElseThrow(() -> {
+                        throw new RuntimeException("Cliente não cadastrado");
+                    })
+                    .addContaCorrente(contaCorrente);
 
-                                dataBase.clientes.removeIf(c2 -> c2.getCpf() == cpfCliente);
-
-                                dataBase.clientes.add(c);
-
-                            }, () -> {
-                                new RuntimeException("Cliente não cadastrado");
-                            });
-                });
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro interno 500");
+        } finally {
+            mutex.release();
+        }
 
     }
 
     @Override
     public void encerraContaCorrente(int agencia, long codigoContaCorrente) {
 
-        dataBase.clientes
-                .stream()
-                .filter(c -> c.getContasCorrentes()
-                        .stream()
-                        .filter(cc -> cc.getAgencia() == agencia
-                                && cc.getCodigoContaCorrente() == codigoContaCorrente)
-                        .findFirst()
-                        .isPresent())
-                .findFirst()
-                .ifPresentOrElse((cliente) -> {
-                    cliente.getContasCorrentes()
-                            .removeIf(cc -> cc.getAgencia() == agencia
-                                    && cc.getCodigoContaCorrente() == codigoContaCorrente);
-                }, () -> {
-                    throw new RuntimeException("Cliente não cadastrado!");
-                });
+        try {
+            mutex.acquire();
+
+            dataBase.clientes
+                    .stream()
+                    .filter(c -> c.getContasCorrentes()
+                            .stream()
+                            .filter(cc -> cc.getAgencia() == agencia
+                                    && cc.getCodigoContaCorrente() == codigoContaCorrente)
+                            .findFirst()
+                            .isPresent())
+                    .findFirst()
+                    .ifPresentOrElse((cliente) -> {
+                        cliente.getContasCorrentes()
+                                .removeIf(cc -> cc.getAgencia() == agencia
+                                        && cc.getCodigoContaCorrente() == codigoContaCorrente);
+                    }, () -> {
+                        throw new RuntimeException("Cliente não cadastrado!");
+                    });
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro interno 500");
+        } finally {
+            mutex.release();
+        }
 
     }
 

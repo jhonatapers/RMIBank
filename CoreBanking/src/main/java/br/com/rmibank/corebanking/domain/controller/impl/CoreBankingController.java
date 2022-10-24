@@ -49,6 +49,8 @@ public class CoreBankingController extends UnicastRemoteObject implements IAgenc
             throws RemoteException {
         try {
             clienteService.aberturaContaCorrente(idempotency, cpfCliente, contaCorrente);
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -78,6 +80,8 @@ public class CoreBankingController extends UnicastRemoteObject implements IAgenc
 
             return transacao;
 
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -102,6 +106,8 @@ public class CoreBankingController extends UnicastRemoteObject implements IAgenc
 
             return transacao;
 
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
